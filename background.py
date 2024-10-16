@@ -1,7 +1,9 @@
+#work in progress but this is what I have so far
 import pygame
 
 screen = pygame.display.set_mode((1280,768))
 
+# This creates images for background
 back = pygame.image.load("Assets/Background/PNG/Tiles/Ground_Tile_02_C.png").convert_alpha()
 mud = pygame.transform.scale(back,(64,64))
 corner = pygame.image.load("Assets/Background/PNG/Hedges/Hedge_B_01.png").convert_alpha()
@@ -15,6 +17,7 @@ rside = pygame.transform.rotate(top,-90)
 bottom = pygame.transform.rotate(top,180)
 lside = pygame.transform.rotate(top,90)
 
+#this creates the player
 char_sprite = pygame.image.load("Assets/Character/PNG/Hulls_Color_D/Hull_01.png").convert_alpha()
 char_tank = pygame.transform.scale(char_sprite,(64,64))
 player = char_tank.get_rect(center = (640,384))
@@ -33,6 +36,7 @@ down = False
 left = False
 right = False
 
+#calling this method refreshes the visuals for the game
 def update():
 
     #generates the muddy background
@@ -60,7 +64,7 @@ def update():
 
     for i in range(64,704,64):
         screen.blit(lside,(0,i))
-
+    # This part should rotate the tank based on what direction the player is moving
     if up and not (right or left):
         screen.blit(char_tank,player)
     elif left and not (up or down):
@@ -79,6 +83,7 @@ update()
 
 running = True
 while running:
+    #controller
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -100,7 +105,7 @@ while running:
                 down = False
             if event.key == pygame.K_d:
                 right = False
-
+    #player movement
     if up:
         if player.top > window.top:
             player = player.move(0,-speed)
@@ -115,5 +120,6 @@ while running:
             player = player.move(speed,0)
 
     update()
-    
+
+    #establishes refresh rate at 60 fps
     clock.tick(60)
