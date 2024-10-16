@@ -3,7 +3,9 @@ import pygame
 
 screen = pygame.display.set_mode((1280,768))
 
-# This creates images for background
+# This creates images for background 
+'''NOTE: This will not work without the files listed in the right file locations'''
+
 back = pygame.image.load("Assets/Background/PNG/Tiles/Ground_Tile_02_C.png").convert_alpha()
 mud = pygame.transform.scale(back,(64,64))
 corner = pygame.image.load("Assets/Background/PNG/Hedges/Hedge_B_01.png").convert_alpha()
