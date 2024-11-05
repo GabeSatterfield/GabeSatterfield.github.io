@@ -1,0 +1,48 @@
+import pygame
+import sys
+pygame.init()
+
+score = 1
+screen = pygame.display.set_mode((1280,768))
+def display_scoreboard():
+    with open("leaderboard.txt", mode="r", encoding="utf-8") as f:
+        scores = f.readlines()
+        lboard = []
+        for i in scores:
+            i = i.replace("[","")
+            lboard.append(int(i))
+            lboard.sort(reverse = True)
+
+
+    top_scores = [f"{i+1}. {score}" for i, score in enumerate(lboard[:5])]
+    lead_surfaces = [timefont.render(score_text, True, (255, 255, 255)) for score_text in top_scores]
+    lead_rects = [lead_surface.get_rect(center=(400, 300 + i * 30)) for i, lead_surface in enumerate(lead_surfaces)]
+
+    timefont = pygame.font.Font(None,32)
+
+    finaltime = timefont.render(f"Your final score is: {score}", True, (255, 255, 255))
+    time_rect = finaltime.get_rect(center=(400, 150))
+    gameover = gamefont.render("Game Over", False, (255, 255, 255))
+    game_rect = gameover.get_rect(center=(400, 100))
+    retry = refont.render("Press SPACE to play again", True, (255, 255, 255))
+    re_rect = retry.get_rect(center=(400, 500))
+
+    screen.fill((0, 0, 0))
+    screen.blit(finaltime, time_rect)
+    screen.blit(gameover, game_rect)
+    for lead_surface, lead_rect in zip(lead_surfaces, lead_rects):
+        screen.blit(lead_surface, lead_rect)
+    screen.blit(retry, re_rect)
+    pygame.display.flip()
+
+running = True
+displayed_scoreboard = False
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                displayed_scoreboard = True
+                display_scoreboard()
