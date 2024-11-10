@@ -1,4 +1,5 @@
 import pygame, sys
+pygam.mixer.init()
 
 screen = pygame.display.set_mode((1280,768))
 
@@ -252,6 +253,17 @@ cb_collidedown = False
 cb_collidedownleft = False
 cb_collideleft = False
 cb_collideupleft = False
+
+bounce = pygame.mixer.Sound('./Sounds/Bounce.m4a')
+bullet = pygame.mixer.Sound('./Sounds/Bullet.mp3')
+Explosion = pygame.mixer.Sound('./Sounds/Explosion.wav')
+Scoreboard = pygame.mixer.Sound('./Sounds/Scoreboard.m4a')
+Tank = pygame.mixer.Sound('./Sounds/Tank.mp3')
+Game_Over = pygame.mixer.Sound('./Sounds/GameOver.mp3')
+Background = pygame.mixer.Sound('./Sounds/War.mp3')
+
+pygame.mixer.music.load("Assingment 5/bgm.mp3")
+pygame.mixer.set_volume(.7)
 
 def update():
 
