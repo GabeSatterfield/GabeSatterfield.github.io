@@ -7,3 +7,6 @@ Scoreboard = pygame.mixer.Sound('./Sounds/Scoreboard.m4a')
 Tank = pygame.mixer.Sound('./Sounds/Tank.mp3')
 Game_Over = pygame.mixer.Sound('./Sounds/GameOver.mp3')
 Background = pygame.mixer.Sound('./Sounds/War.mp3')
+
+pygame.mixer.music.load("Assingment 5/bgm.mp3")
+pygame.mixer.set_volume(.7)
