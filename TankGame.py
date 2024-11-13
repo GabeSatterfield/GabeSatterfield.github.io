@@ -449,6 +449,7 @@ class Laser(pygame.sprite.Sprite):
         self.is_active = True
         self.base = pygame.Rect(Pr23.x-10,Pr23.y,Pr23.w,Pr23.h)  # Blue base at the top of the laser
         self.baseimage = pygame.transform.rotate(Lasergun,180)
+        self.mask = pygame.mask.from_surface(self.image)
     def disable(self):
         self.is_active = False
 
@@ -492,12 +493,13 @@ while True:
     pygame.mixer.music.play()
 
     enemycount = 0
-    level = 0
+    level = 20
 
     player = char_tank.get_rect(center = (100,384))
     player_bulletrects = []
 
     gun_traps.empty()
+    omnitrap = False
 
     dead = False
 
@@ -590,10 +592,24 @@ while True:
 
         if enemycount == 0:
             level += 1
-            while enemycount < level:
-                randompos = random.choice(enemy_position)
-                gun_traps.add(GunTrap(randompos.centerx,randompos.centery, random.choice(directions_list)))
+            enemy_position = [Pr1, Pr2, Pr3, Pr4, Pr5, Pr6, Pr7, Pr8, Pr9, Pr10, Pr11, Pr12, Pr13, Pr14, Pr15, Pr16, Pr17, Pr18, Pr19, Pr20, Pr21, Pr22, Pr25]
+            while enemycount < level and enemycount != 23:
+                if len(enemy_position) > 0:
+                    randompos = random.choice(enemy_position)
+                    gun_traps.add(GunTrap(randompos.centerx,randompos.centery, random.choice(directions_list)))
+                    enemy_position.remove(randompos)
+                    enemycount += 1
+
+        if level > 5 :
+            if omnitrap == False:
+            # All-directions Gun Trap
+                all_directions = [(1, 0), (0, 1), (0, -1), (-1, 0), (1, 1), (1, -1), (-1, -1), (-1, 1)]
+                all_directions_trap = GunTrap(Pr25.centerx,Pr25.centery, all_directions)
+                gun_traps.add(all_directions_trap)
+                all_directions_trap.shoot_delay = 80
+                all_directions_trap.shoot_timer = 0
                 enemycount += 1
+                omnitrap = True
 
         for rect in obstacle_list:
             if player.colliderect(rect):
@@ -612,18 +628,16 @@ while True:
                     dead = True
                     shot.kill()
 
+        if player_mask.overlap(laser.mask,(laser.rect.x-player.x,laser.rect.y-player.y)):
+            dead = True
+
         for enemy in gun_traps:
             for i in player_bulletrects:
                 if i.colliderect(enemy.rect):
                     enemy.kill()
                     enemycount -= 1
+                    print(enemycount)
                     Explosion.play()
-
-        if level > 5:
-            # All-directions Gun Trap
-            all_directions = [(1, 0), (0, 1), (0, -1), (-1, 0), (1, 1), (1, -1), (-1, -1), (-1, 1)]
-            all_directions_trap = GunTrap(Pr25.centerx,Pr25.centery, all_directions)
-            gun_traps.add(all_directions_trap)
 
         for rect in obstacle_list:
             if shootupright:
